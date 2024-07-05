@@ -35,6 +35,7 @@ const Button = ({ onClick, text }) => {
 
 const App = () => {
   // save clicks of each button to its own state
+  
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -52,13 +53,13 @@ const App = () => {
 
   const handleBad = () => {
     setBad(bad+1)
+    debugger
     setTotal(total+1)
   }
 
   return (
     <div>
       <h1>give feedback</h1>
-
       <Button onClick={handleGood} text='good' /> 
       <Button onClick={handleNeutral} text='neutral' /> 
       <Button onClick={handleBad} text='bad' /> 
