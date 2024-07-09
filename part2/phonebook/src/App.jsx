@@ -1,21 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import Filter from './components/Filter'
-import Contacts from './components/Contacts'
 import ContactForm from './components/ContactForm'
+import Contacts from './components/Contacts'
+
+
 
 const App = () => {
-  const [contacts, setContacts] = useState([
-    { name: 'Arto Hellas', number: '5182-2906', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
-    { name: 'Eduardo Função', number: '994409320', id: 5}
-  ]) 
+  const [contacts, setContacts] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')  
-
+  
+  useEffect(() => {
+    axios.get("http://localhost:3001/contacts")
+    .then(response => {
+      const contacts = response.data
+      setContacts(contacts)
+    })
+  }, [])
+  
   const handleFilterChange = (event) => {
     setFilterName(event.target.value)
   }
@@ -30,7 +35,7 @@ const App = () => {
       
       <h2>Numbers</h2>
       <Contacts contacts={contacts} filterName={filterName}/>
-    </div>
+    </div>     
   )
 }
 
