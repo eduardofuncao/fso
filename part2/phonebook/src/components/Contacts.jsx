@@ -2,11 +2,13 @@ import contactService from "../services/contactService"
 
 const Contact = ({ name, number, id, contacts, setContacts }) => {
   const handleContactRemoval = () => {
-    contactService.remove(id)
-    .then(returnedNote => {
-      const filteredContacts = contacts.filter(contact => contact.id !== id)
-      setContacts(filteredContacts)
+    if(window.confirm(`are you sure you want to delete ${name} from the list?`)) {
+      contactService.remove(id)
+      .then(returnedNote => {
+        const filteredContacts = contacts.filter(contact => contact.id !== id)
+        setContacts(filteredContacts)
     })
+    }
   }
 
   return(

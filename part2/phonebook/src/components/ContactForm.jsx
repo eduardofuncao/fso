@@ -2,13 +2,11 @@ import axios from "axios"
 import contactService from "../services/contactService"
 
 const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, setNewNumber }) => {
-    const hasTargetName = (array, name) => {
-      return array.some(person => person.name === name)
-    }
-    
+    const contactFound = contacts.find(person => person.name === newName)
+
     const addContact = (event) => {
       event.preventDefault()
-      if (!hasTargetName(contacts, newName)){
+      if (!contactFound){
         const contactObject = {
           name: newName,
           number: newNumber,
@@ -20,7 +18,13 @@ const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, set
           setNewNumber('')
         })
       } else {
-        alert(`${newName} is already added to phonebook`)
+        if (window.confirm(`${newName} is already added to phonebook. Do you wish to change the phone number to ${newNumber}?`)) {
+          const updatedContact = { ...contactFound, number:newNumber}
+          contactService.update(contactFound.id, updatedContact)
+          .then(returnedContact => {
+            setContacts(contacts.map(contact => contact.id !== returnedContact.id ? contact : returnedContact))
+          })
+        }
       }
       
     }
@@ -49,3 +53,6 @@ const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, set
   }
 
   export default ContactForm
+
+
+  const beta = "continuar indo ao cinema"
