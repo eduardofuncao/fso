@@ -1,7 +1,7 @@
 import axios from "axios"
 import contactService from "../services/contactService"
 
-const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, setNewNumber }) => {
+const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, setNewNumber, setErrorMessage }) => {
     const contactFound = contacts.find(person => person.name === newName)
 
     const addContact = (event) => {
@@ -12,10 +12,15 @@ const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, set
           number: newNumber,
         }
         contactService.create(contactObject)
-        .then(returnedNote => {
-          setContacts(contacts.concat(returnedNote))
+        .then(returnedContact => {
+          setContacts(contacts.concat(returnedContact))
           setNewName('')
           setNewNumber('')
+
+          setErrorMessage(`Contact for ${returnedContact.name} created`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
       } else {
         if (window.confirm(`${newName} is already added to phonebook. Do you wish to change the phone number to ${newNumber}?`)) {
@@ -23,6 +28,12 @@ const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, set
           contactService.update(contactFound.id, updatedContact)
           .then(returnedContact => {
             setContacts(contacts.map(contact => contact.id !== returnedContact.id ? contact : returnedContact))
+          }).catch(error => {
+            console.log("caught error")
+            setErrorMessage(`Contact for ${newName} has been deleted from the server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           })
         }
       }
