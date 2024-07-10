@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import contactService from './services/contactService'
+
 import Filter from './components/Filter'
 import ContactForm from './components/ContactForm'
 import Contacts from './components/Contacts'
@@ -14,10 +16,9 @@ const App = () => {
   const [filterName, setFilterName] = useState('')  
   
   useEffect(() => {
-    axios.get("http://localhost:3001/contacts")
-    .then(response => {
-      const contacts = response.data
-      setContacts(contacts)
+    contactService.getAll()
+    .then(initialContacts => {
+      setContacts(initialContacts)
     })
   }, [])
   
@@ -34,9 +35,10 @@ const App = () => {
       <ContactForm contacts={contacts} setContacts={setContacts} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
       
       <h2>Numbers</h2>
-      <Contacts contacts={contacts} filterName={filterName}/>
+      <Contacts contacts={contacts} setContacts={setContacts} filterName={filterName}/>
     </div>     
   )
 }
 
 export default App
+

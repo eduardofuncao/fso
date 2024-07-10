@@ -1,26 +1,36 @@
-const Contact = ({ name, number }) => {
-    return(
-        <li>{name} | {number}</li>
-    )
-  }
-  
-  const Contacts = ({ contacts, filterName }) => {
-    const contactsToShow = () => {
-      if (filterName === '') {
-        return contacts
-      }
-      else {
-        return contacts.filter(contact => contact.name.toUpperCase().includes(filterName.toUpperCase()))
-      }
-    }
-  
-    return(
-      <ul>
-          {contactsToShow().map((contact) => 
-            <Contact key={contact.id} name={contact.name} number={contact.number} />
-          )}
-      </ul>
-    )
+import contactService from "../services/contactService"
+
+const Contact = ({ name, number, id, contacts, setContacts }) => {
+  const handleContactRemoval = () => {
+    contactService.remove(id)
+    .then(returnedNote => {
+      const filteredContacts = contacts.filter(contact => contact.id !== id)
+      setContacts(filteredContacts)
+    })
   }
 
-  export default Contacts
+  return(
+    <li>{name} | {number} <button onClick={handleContactRemoval}>remove</button></li>
+  )
+}
+  
+const Contacts = ({ contacts, setContacts, filterName }) => {
+  const contactsToShow = () => {
+    if (filterName === '') {
+      return contacts
+    }
+    else {
+      return contacts.filter(contact => contact.name.toUpperCase().includes(filterName.toUpperCase()))
+    }
+  }
+
+  return(
+    <ul>
+        {contactsToShow().map((contact) => 
+          <Contact key={contact.id} id={contact.id} name={contact.name} number={contact.number} contacts={contacts} setContacts={setContacts}/>
+        )}
+    </ul>
+  )
+}
+
+export default Contacts

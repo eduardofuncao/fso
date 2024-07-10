@@ -1,3 +1,6 @@
+import axios from "axios"
+import contactService from "../services/contactService"
+
 const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, setNewNumber }) => {
     const hasTargetName = (array, name) => {
       return array.some(person => person.name === name)
@@ -9,11 +12,13 @@ const ContactForm = ({contacts, setContacts, newName, newNumber, setNewName, set
         const contactObject = {
           name: newName,
           number: newNumber,
-          id: contacts.length + 1
         }
-        setContacts(contacts.concat(contactObject))
-        setNewName('')
-        setNewNumber('')
+        contactService.create(contactObject)
+        .then(returnedNote => {
+          setContacts(contacts.concat(returnedNote))
+          setNewName('')
+          setNewNumber('')
+        })
       } else {
         alert(`${newName} is already added to phonebook`)
       }
