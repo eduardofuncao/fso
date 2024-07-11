@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import countriesService from './services/countriesService'
 
@@ -11,8 +11,10 @@ function App() {
   const [countries, setCountries] = useState([])
   const [selectedCountryName, setSelectedCountryName] = useState(null)
 
-  countriesService.getAll()
-  .then(countries => setCountries(countries))
+  useEffect(() => {
+    countriesService.getAll()
+    .then(countries => setCountries(countries))
+  },[])
 
   return (
     <>
