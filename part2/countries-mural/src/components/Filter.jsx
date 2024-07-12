@@ -4,7 +4,7 @@ const Filter = ({ search, setSearch }) => {
         setSearch(event.target.value)
     }
 
-    return(
+    return (
         <p>find countries <input value={search} onChange={handleFilterChange} /></p>
     )
 }

@@ -13,14 +13,14 @@ function App() {
 
   useEffect(() => {
     countriesService.getAll()
-    .then(countries => setCountries(countries))
-  },[])
+      .then(countries => setCountries(countries))
+  }, [])
 
   return (
     <>
       <h1>Countries Mural</h1>
       <Filter search={search} setSearch={setSearch} />
-      <CountryList countries={countries} search={search} setSelectedCountryName={setSelectedCountryName}/>
+      <CountryList countries={countries} search={search} setSelectedCountryName={setSelectedCountryName} />
       <Country countries={countries} selectedCountryName={selectedCountryName} />
     </>
 
